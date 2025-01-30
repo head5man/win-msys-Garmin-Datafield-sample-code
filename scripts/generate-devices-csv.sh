@@ -1,9 +1,11 @@
 #!/bin/sh -u
 set -e
 
+source ./build-conf.sh
+
 RDIR="$(dirname "${0}")"
 
-DEVICES_PATH="${HOME}/Library/Application Support/Garmin/ConnectIQ/Devices"
+DEVICES_PATH="${GARMIN_SDK_BASE_PATH}/Garmin/ConnectIQ/Devices"
 DEVICES="$(grep -F '<iq:product id="' "${RDIR}/../manifest.xml" | grep -oE '"[^"]*"' | tr -d '"')"
 
 

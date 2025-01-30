@@ -1,9 +1,10 @@
 #!/bin/sh -u
 set -e
 
+source ./scripts/build-conf.sh
+
 RDIR="$(dirname "${0}")"
-JAVA_HOME=$(/usr/libexec/java_home -v1.8)
-CIQ_PATH="$(cat ${HOME}/Library/Application\ Support/Garmin/ConnectIQ/current-sdk.cfg)/bin"
+CIQ_PATH="$(cat ${GARMIN_SDK_BASE_PATH}/Garmin/ConnectIQ/current-sdk.cfg)/bin"
 
 export PATH="${PATH}:${CIQ_PATH}"
 
@@ -12,7 +13,7 @@ DEVICES="$(grep -F '<iq:product id="' "${RDIR}/manifest.xml" | grep -oE '"[^"]*"
 NB_DEVICES="$(printf "${DEVICES}\n" | wc -l)"
 CURRENT_DEVICE="$(printf "${DEVICES}\n" | head -n $(( 1 + ${RANDOM} % ${NB_DEVICES} )) | tail -n 1)"
 
-SIMULATOR_INI="${HOME}/Library/Application Support/Garmin/ConnectIQ/simulator.ini"
+SIMULATOR_INI="${GARMIN_SDK_BASE_PATH}/Garmin/ConnectIQ/simulator.ini"
 TTY_MODEM="$(ls /dev/tty.usbmodem* 2> /dev/null | head -n 1)"
 
 CURRENT_OPTS=
@@ -49,7 +50,7 @@ function _simu() {
             printf "NordicPort=${TTY_MODEM}\n" > "${SIMULATOR_INI}"
         fi
     fi
-    pgrep -q simulator || connectiq
+    # pgrep -q simulator || connectiq
 }
 
 function _clean() {
@@ -78,7 +79,7 @@ function _pack() {
         --api-level   "${MINSDKVERSION}" \
         --jungles     "${RDIR}/monkey.jungle;${RDIR}/barrels.jungle" \
         --output      "${RDIR}/bin/ActiveLookDataField.iq" \
-        --private-key "${RDIR}/key/GarminDeveloperKey"
+        --private-key "$DEVELOPER_KEY"
 }
 
 function _build() {
@@ -89,7 +90,7 @@ function _build() {
         --device      "${CURRENT_DEVICE}" \
         --jungles     "${RDIR}/monkey.jungle;${RDIR}/barrels.jungle" \
         --output      "${RDIR}/bin/ActiveLookDataField-${CURRENT_DEVICE}.prg" \
-        --private-key "${RDIR}/key/GarminDeveloperKey"
+        --private-key "$DEVELOPER_KEY"
 }
 
 function _run() {

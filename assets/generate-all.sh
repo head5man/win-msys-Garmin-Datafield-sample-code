@@ -1,9 +1,10 @@
 #!/bin/sh -u
 set -e
 
-RDIR="$(dirname "${0}")"
+source ../scripts/build-conf.sh
 
-DEVICES_PATH="${HOME}/Library/Application Support/Garmin/ConnectIQ/Devices"
+RDIR="$(dirname "${0}")"
+DEVICES_PATH="${GARMIN_SDK_BASE_PATH}/Garmin/ConnectIQ/Devices"
 DEVICES="$(grep -F '<iq:product id="' "${RDIR}/../manifest.xml" | grep -oE '"[^"]*"' | tr -d '"')"
 
 
@@ -30,6 +31,7 @@ for DEVICE in ${DEVICES} ; do
     RESOLUTION="$(grep -A 2 '"resolution"' "${DEVICES_PATH}/${DEVICE}/compiler.json")"
     MIN_IQ_VERSION="$(printf "${IQ_VERSIONS}" | head -n 1)"
     MAX_IQ_VERSION="$(printf "${IQ_VERSIONS}" | tail -n 1)"
+    printf "DEV: ${DEVICE} MEM=${MEMORY_LIMIT} CIQ=${IQ_VERSIONS}\n"
     LAUNCHER_ICON_W="$(printf "${LAUNCHER_ICON}" | grep -F '"width' | sed -e 's/[^0-9.]//g')"
     LAUNCHER_ICON_H="$(printf "${LAUNCHER_ICON}" | grep -F '"height' | sed -e 's/[^0-9.]//g')"
     RESOLUTION_W="$(printf "${RESOLUTION}" | grep -F '"width' | sed -e 's/[^0-9.]//g')"
