@@ -1,5 +1,5 @@
-RDIR="$(dirname "${0}")"
-MY_KEY="$(realpath ${RDIR}/../../key/developer_key)"
+RDIR="$(dirname "$(realpath $BASH_SOURCE)")"
+MY_KEY="$(realpath ${RDIR}/../key/developer_key)"
 export DEVELOPER_KEY=$MY_KEY
 
 case "$OSTYPE" in
