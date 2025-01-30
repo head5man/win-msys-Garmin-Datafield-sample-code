@@ -48,6 +48,7 @@ fenix7spro.resourcePath = $(base.resourcePath);assets/generated/fenix7spro
 fenix7x.resourcePath = $(base.resourcePath);assets/generated/fenix7x
 fenix7xpro.resourcePath = $(base.resourcePath);assets/generated/fenix7xpro
 fenix7xpronowifi.resourcePath = $(base.resourcePath);assets/generated/fenix7xpronowifi
+fenix847mm.resourcePath = $(base.resourcePath);assets/generated/fenix847mm
 fr165.resourcePath = $(base.resourcePath);assets/generated/fr165
 fr165m.resourcePath = $(base.resourcePath);assets/generated/fr165m
 fr245m.resourcePath = $(base.resourcePath);assets/generated/fr245m
